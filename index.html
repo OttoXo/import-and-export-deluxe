@@ -1,0 +1,2047 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#09090c">
+<title>Месяц отношений — Deluxe Edition</title>
+
+<style>
+:root {
+  --pink: #FF355D;
+  --white: #FFFFFF;
+  --bg: #09090c;
+  --muted: rgba(255,255,255,.52);
+  --muted-strong: rgba(255,255,255,.72);
+  --line: rgba(255,255,255,.11);
+  --glass: rgba(16,16,20,.82);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  background:
+    radial-gradient(
+      circle at 50% 20%,
+      rgba(255,53,93,.18),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 10% 90%,
+      rgba(255,53,93,.10),
+      transparent 28%
+    ),
+    var(--bg);
+
+  color: var(--white);
+  overflow-x: hidden;
+}
+
+/* ----------------------------------------------------------
+   ЗЕРНО / ШУМ
+---------------------------------------------------------- */
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: .07;
+
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.7'/%3E%3C/svg%3E");
+
+  mix-blend-mode: screen;
+  z-index: 999;
+}
+
+/* ----------------------------------------------------------
+   ПЕРВЫЙ ЭКРАН
+---------------------------------------------------------- */
+
+.screen {
+  min-height: 100svh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: relative;
+  padding: 30px;
+}
+
+#intro {
+  cursor: pointer;
+
+  transition:
+    opacity .8s ease,
+    transform .8s ease;
+}
+
+#intro.hide {
+  opacity: 0;
+  transform: scale(1.06);
+  pointer-events: none;
+}
+
+.intro-content {
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.kicker {
+  letter-spacing: .35em;
+  text-transform: uppercase;
+  font-size: 11px;
+  color: var(--muted);
+  margin-bottom: 18px;
+}
+
+.intro-title {
+  font-size: clamp(48px, 10vw, 120px);
+  line-height: .88;
+
+  margin: 0;
+
+  font-weight: 800;
+  letter-spacing: -.06em;
+
+  background:
+    linear-gradient(
+      135deg,
+      #fff 15%,
+      #fff 40%,
+      #FF355D 90%
+    );
+
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  color: transparent;
+}
+
+.intro-sub {
+  margin-top: 28px;
+
+  color: rgba(255,255,255,.7);
+  font-size: 14px;
+}
+
+.pulse {
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: var(--pink);
+
+  margin: 35px auto 0;
+
+  box-shadow:
+    0 0 0 0 rgba(255,53,93,.55);
+
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+
+  0% {
+    box-shadow:
+      0 0 0 0 rgba(255,53,93,.5);
+  }
+
+  70% {
+    box-shadow:
+      0 0 0 22px rgba(255,53,93,0);
+  }
+
+  100% {
+    box-shadow:
+      0 0 0 0 rgba(255,53,93,0);
+  }
+
+}
+
+/* ----------------------------------------------------------
+   АЛЬБОМ
+---------------------------------------------------------- */
+
+#album {
+  display: none;
+
+  opacity: 0;
+
+  min-height: 100svh;
+
+  padding:
+    60px
+    5vw
+    170px;
+}
+
+#album.show {
+  display: block;
+
+  animation:
+    appear 1s .15s forwards;
+}
+
+@keyframes appear {
+  to {
+    opacity: 1;
+  }
+}
+
+.wrap {
+  max-width: 1100px;
+  margin: auto;
+}
+
+/* ----------------------------------------------------------
+   HERO
+---------------------------------------------------------- */
+
+.hero {
+  display: grid;
+
+  grid-template-columns:
+    minmax(220px,360px)
+    1fr;
+
+  gap: clamp(35px,7vw,90px);
+
+  align-items: end;
+
+  margin-bottom: 70px;
+}
+
+/* ----------------------------------------------------------
+   ОБЛОЖКА
+---------------------------------------------------------- */
+
+.cover {
+  aspect-ratio: 1;
+
+  border-radius: 22px;
+
+  overflow: hidden;
+
+  position: relative;
+
+  background: #FF355D;
+
+  box-shadow:
+    0 28px 90px
+    rgba(255,53,93,.25);
+}
+
+.cover img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+}
+
+/* Блик на обложке */
+
+.cover::before {
+  content: "";
+
+  position: absolute;
+
+  inset: -25%;
+
+  background:
+    linear-gradient(
+      135deg,
+      transparent 35%,
+      rgba(255,255,255,.65),
+      transparent 65%
+    );
+
+  transform: rotate(-18deg);
+
+  animation:
+    shine 6s ease-in-out infinite;
+
+  pointer-events: none;
+}
+
+@keyframes shine {
+
+  0%,
+  35% {
+    transform:
+      translateX(-65%)
+      rotate(-18deg);
+  }
+
+  70%,
+  100% {
+    transform:
+      translateX(65%)
+      rotate(-18deg);
+  }
+
+}
+
+/* ----------------------------------------------------------
+   ТЕКСТ АЛЬБОМА
+---------------------------------------------------------- */
+
+.eyebrow {
+  color: var(--pink);
+
+  letter-spacing: .25em;
+
+  font-size: 11px;
+
+  text-transform: uppercase;
+
+  margin-bottom: 15px;
+}
+
+h1 {
+  margin: 0;
+
+  font-size:
+    clamp(42px,7vw,82px);
+
+  letter-spacing: -.06em;
+
+  line-height: .9;
+}
+
+.desc {
+  color: var(--muted);
+
+  max-width: 520px;
+
+  line-height: 1.7;
+
+  margin-top: 22px;
+
+  font-size: 15px;
+}
+
+.artist {
+  margin-top: 32px;
+
+  font-weight: 600;
+}
+
+/* ----------------------------------------------------------
+   БЛОК С КОММЕНТАРИЕМ + ТРЕКАМИ
+---------------------------------------------------------- */
+
+.music-section {
+  display: grid;
+
+  grid-template-columns:
+    minmax(230px,300px)
+    1fr;
+
+  gap: 35px;
+
+  align-items: start;
+}
+
+/* ----------------------------------------------------------
+   КОММЕНТАРИЙ
+---------------------------------------------------------- */
+
+.comment {
+  position: sticky;
+
+  top: 30px;
+
+  padding: 25px 24px;
+
+  border: 1px solid rgba(255,255,255,.10);
+
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,53,93,.11),
+      rgba(255,255,255,.025)
+    );
+
+  backdrop-filter: blur(15px);
+
+  box-shadow:
+    0 18px 50px
+    rgba(0,0,0,.18);
+
+  transition:
+    opacity .25s ease,
+    transform .25s ease;
+}
+
+.comment.changing {
+  opacity: 0;
+  transform: translateY(6px);
+}
+
+.comment-label {
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  color: var(--pink);
+
+  font-size: 10px;
+
+  letter-spacing: .25em;
+
+  text-transform: uppercase;
+
+  margin-bottom: 18px;
+}
+
+.comment-dot {
+  width: 6px;
+  height: 6px;
+
+  border-radius: 50%;
+
+  background: var(--pink);
+
+  box-shadow:
+    0 0 12px
+    rgba(255,53,93,.8);
+}
+
+.comment-track {
+  font-size: 11px;
+
+  color: var(--muted);
+
+  margin-bottom: 12px;
+
+  letter-spacing: .08em;
+
+  text-transform: uppercase;
+}
+
+.comment-text {
+  margin: 0;
+
+  color: rgba(255,255,255,.84);
+
+  font-size: 15px;
+
+  line-height: 1.7;
+
+  font-weight: 400;
+}
+
+.comment-number {
+  margin-top: 20px;
+
+  color: rgba(255,255,255,.25);
+
+  font-size: 10px;
+
+  letter-spacing: .18em;
+
+  text-transform: uppercase;
+}
+
+/* ----------------------------------------------------------
+   ТРЕКЛИСТ
+---------------------------------------------------------- */
+
+.tracks {
+  border-top:
+    1px solid var(--line);
+}
+
+.track {
+  display: grid;
+
+  grid-template-columns:
+    55px
+    1fr
+    150px
+    65px;
+
+  gap: 18px;
+
+  align-items: center;
+
+  min-height: 78px;
+
+  border-bottom:
+    1px solid var(--line);
+
+  cursor: pointer;
+
+  transition:
+    background .25s ease,
+    transform .2s ease;
+
+  padding: 0 15px;
+
+  border-radius: 10px;
+
+  -webkit-tap-highlight-color: transparent;
+}
+
+.track:hover,
+.track.active {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(255,53,93,.13),
+      rgba(255,255,255,.035)
+    );
+}
+
+.track:active {
+  transform: scale(.995);
+}
+
+.num {
+  color: var(--muted);
+
+  font-variant-numeric:
+    tabular-nums;
+}
+
+.track-name {
+  font-weight: 650;
+}
+
+.original {
+  color: var(--muted);
+
+  font-size: 13px;
+}
+
+.time {
+  color: var(--muted);
+
+  font-size: 13px;
+
+  text-align: right;
+
+  font-variant-numeric:
+    tabular-nums;
+}
+
+.playmark {
+  color: var(--pink);
+
+  font-weight: bold;
+
+  margin-right: 8px;
+}
+
+/* ----------------------------------------------------------
+   ПЛЕЕР
+---------------------------------------------------------- */
+
+.player {
+  position: fixed;
+
+  z-index: 20;
+
+  left: 50%;
+  bottom: 18px;
+
+  transform:
+    translateX(-50%);
+
+  width:
+    min(
+      1050px,
+      calc(100% - 28px)
+    );
+
+  background:
+    rgba(16,16,20,.82);
+
+  backdrop-filter:
+    blur(22px);
+
+  border:
+    1px solid
+    rgba(255,255,255,.12);
+
+  border-radius: 18px;
+
+  padding:
+    14px 18px;
+
+  box-shadow:
+    0 20px 60px
+    rgba(0,0,0,.4);
+}
+
+.player-top {
+  display: flex;
+
+  align-items: center;
+
+  gap: 15px;
+}
+
+.now {
+  flex: 1;
+
+  min-width: 0;
+}
+
+.now-title {
+  font-weight: 650;
+
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+}
+
+.now-meta {
+  font-size: 11px;
+
+  color: var(--muted);
+
+  margin-top: 3px;
+}
+
+.controls {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+}
+
+button {
+  border: 0;
+
+  color: #fff;
+
+  background:
+    rgba(255,255,255,.08);
+
+  width: 38px;
+  height: 38px;
+
+  border-radius: 50%;
+
+  cursor: pointer;
+
+  transition:
+    background .2s ease,
+    transform .15s ease;
+
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:hover {
+  background:
+    rgba(255,53,93,.25);
+}
+
+button:active {
+  transform: scale(.9);
+}
+
+#play {
+  background:
+    linear-gradient(
+      135deg,
+      #fff,
+      #FF355D
+    );
+
+  color: #111;
+
+  font-weight: 900;
+}
+
+.progress {
+  height: 4px;
+
+  background:
+    rgba(255,255,255,.12);
+
+  border-radius: 10px;
+
+  margin-top: 13px;
+
+  cursor: pointer;
+
+  overflow: hidden;
+}
+
+.progress-fill {
+  width: 0%;
+
+  height: 100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      #fff,
+      #FF355D
+    );
+
+  transition:
+    width .05s linear;
+}
+
+/* ----------------------------------------------------------
+   ЧАСТИЦЫ
+---------------------------------------------------------- */
+
+.particle {
+  position: fixed;
+
+  pointer-events: none;
+
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      135deg,
+      #fff,
+      #FF355D
+    );
+
+  z-index: 100;
+
+  animation:
+    burst 1.2s ease-out
+    forwards;
+}
+
+@keyframes burst {
+
+  to {
+    transform:
+      translate(
+        var(--x),
+        var(--y)
+      )
+      scale(0);
+
+    opacity: 0;
+  }
+
+}
+
+/* ----------------------------------------------------------
+   ПЛАНШЕТ
+---------------------------------------------------------- */
+
+@media(max-width:850px) {
+
+  .music-section {
+    grid-template-columns: 1fr;
+  }
+
+  .comment {
+    position: relative;
+
+    top: auto;
+
+    width: 100%;
+  }
+
+}
+
+/* ----------------------------------------------------------
+   ТЕЛЕФОН
+---------------------------------------------------------- */
+
+@media(max-width:700px) {
+
+  #album {
+    padding:
+      35px
+      16px
+      150px;
+  }
+
+  .hero {
+    grid-template-columns: 1fr;
+
+    gap: 32px;
+
+    margin-bottom: 45px;
+  }
+
+  .cover {
+    max-width: 340px;
+
+    width: 100%;
+
+    margin: auto;
+
+    border-radius: 18px;
+  }
+
+  .eyebrow {
+    font-size: 10px;
+
+    margin-bottom: 13px;
+  }
+
+  h1 {
+    font-size:
+      clamp(
+        39px,
+        12vw,
+        58px
+      );
+
+    line-height: .91;
+  }
+
+  .desc {
+    font-size: 14px;
+
+    line-height: 1.65;
+
+    margin-top: 17px;
+  }
+
+  .artist {
+    margin-top: 23px;
+  }
+
+  /* Комментарий */
+
+  .comment {
+    padding:
+      21px
+      19px;
+
+    border-radius: 16px;
+  }
+
+  .comment-label {
+    margin-bottom: 14px;
+  }
+
+  .comment-text {
+    font-size: 14px;
+
+    line-height: 1.65;
+  }
+
+  .comment-number {
+    margin-top: 16px;
+  }
+
+  /* Треки */
+
+  .track {
+    grid-template-columns:
+      35px
+      1fr
+      55px;
+
+    gap: 10px;
+
+    min-height: 68px;
+
+    padding:
+      0 8px;
+  }
+
+  .original {
+    display: none;
+  }
+
+  .track-name {
+    font-size: 14px;
+
+    line-height: 1.3;
+  }
+
+  .num {
+    font-size: 12px;
+  }
+
+  .time {
+    font-size: 12px;
+  }
+
+  /* Плеер */
+
+  .player {
+    bottom:
+      calc(
+        10px +
+        env(safe-area-inset-bottom)
+      );
+
+    width:
+      calc(100% - 20px);
+
+    padding:
+      11px 12px;
+
+    border-radius: 16px;
+  }
+
+  .player-top {
+    gap: 8px;
+  }
+
+  .now-title {
+    font-size: 13px;
+  }
+
+  .now-meta {
+    font-size: 10px;
+  }
+
+  .controls {
+    gap: 5px;
+  }
+
+  button {
+    width: 38px;
+    height: 38px;
+  }
+
+  .time {
+    min-width: 72px;
+
+    font-size: 10px;
+  }
+
+  .progress {
+    height: 4px;
+
+    margin-top: 11px;
+  }
+
+}
+
+/* ----------------------------------------------------------
+   ОЧЕНЬ МАЛЕНЬКИЕ ТЕЛЕФОНЫ
+---------------------------------------------------------- */
+
+@media(max-width:390px) {
+
+  #album {
+    padding-left: 13px;
+    padding-right: 13px;
+  }
+
+  .player {
+    width:
+      calc(100% - 14px);
+
+    padding:
+      9px 10px;
+  }
+
+  .player-top {
+    gap: 5px;
+  }
+
+  .controls {
+    gap: 3px;
+  }
+
+  button {
+    width: 35px;
+    height: 35px;
+  }
+
+  .time {
+    min-width: 62px;
+  }
+
+}
+
+/* ----------------------------------------------------------
+   ЕСЛИ ПОЛЬЗОВАТЕЛЬ НЕ ЛЮБИТ АНИМАЦИИ
+---------------------------------------------------------- */
+
+@media(prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+
+}
+</style>
+</head>
+
+<body>
+
+<!-- ========================================================
+     ПЕРВЫЙ ЭКРАН
+========================================================= -->
+
+<section
+  id="intro"
+  class="screen"
+  aria-label="Открыть подарок"
+>
+
+  <div class="intro-content">
+
+    <div class="kicker">
+      маленький подарок
+    </div>
+
+    <h2 class="intro-title">
+      Месяц<br>
+      отношений
+    </h2>
+
+    <div class="intro-sub">
+      нажми в любом месте, чтобы открыть
+    </div>
+
+    <div class="pulse"></div>
+
+  </div>
+
+</section>
+
+
+<!-- ========================================================
+     АЛЬБОМ
+========================================================= -->
+
+<main id="album">
+
+  <div class="wrap">
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+      <div class="cover">
+
+        <!--
+          ОБЛОЖКА
+          Положи cover.jpg в папку music
+        -->
+
+        <img
+          src="music/Export&Import2.jpg"
+          alt="Обложка альбома"
+        >
+
+      </div>
+
+
+      <div>
+
+        <div class="eyebrow">
+          для тебя
+        </div>
+
+        <h1>
+          Import & Export<br>
+          (Special Edition)
+        </h1>
+
+        <p class="desc">
+          Пять чудесных песен, чудесной группы
+          моего детства)
+        </p>
+
+        <p class="desc">
+          Нажми на любую — и пусть музыка
+          всё скажет сама...
+        </p>
+
+        <p class="desc">
+          И чуть чуть я)
+        </p>
+
+        <div class="artist">
+          MaryXo
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ====================================================
+         МУЗЫКА + КОММЕНТАРИЙ
+    ===================================================== -->
+
+    <section class="music-section">
+
+
+      <!-- КОММЕНТАРИЙ -->
+
+      <aside
+        class="comment"
+        id="comment"
+      >
+
+        <div class="comment-label">
+
+          <span class="comment-dot"></span>
+
+          от меня
+
+        </div>
+
+
+        <div
+          class="comment-track"
+          id="commentTrack"
+        >
+          выбери песню
+        </div>
+
+
+        <p
+          class="comment-text"
+          id="commentText"
+        >
+          Здесь появится моя маленькая
+          заметка к этой песне...
+        </p>
+
+
+        <div
+          class="comment-number"
+          id="commentNumber"
+        >
+          заметка 00 / 05
+        </div>
+
+      </aside>
+
+
+      <!-- ТРЕКЛИСТ -->
+
+      <section
+        class="tracks"
+        id="tracks"
+      ></section>
+
+
+    </section>
+
+  </div>
+
+</main>
+
+
+<!-- ========================================================
+     ПЛЕЕР
+========================================================= -->
+
+<div
+  class="player"
+  id="player"
+>
+
+  <div class="player-top">
+
+
+    <div class="now">
+
+      <div
+        class="now-title"
+        id="nowTitle"
+      >
+        Выбери песню
+      </div>
+
+      <div
+        class="now-meta"
+        id="nowMeta"
+      >
+        MaryXo
+      </div>
+
+    </div>
+
+
+    <div class="controls">
+
+      <button
+        id="prev"
+        title="Предыдущая"
+        aria-label="Предыдущая песня"
+      >
+        ‹
+      </button>
+
+
+      <button
+        id="play"
+        title="Воспроизвести"
+        aria-label="Воспроизвести"
+      >
+        ▶
+      </button>
+
+
+      <button
+        id="next"
+        title="Следующая"
+        aria-label="Следующая песня"
+      >
+        ›
+      </button>
+
+    </div>
+
+
+    <div
+      class="time"
+      id="clock"
+    >
+      00:00 / 00:00
+    </div>
+
+
+  </div>
+
+
+  <div
+    class="progress"
+    id="progress"
+    aria-label="Прогресс песни"
+  >
+
+    <div
+      class="progress-fill"
+      id="progressFill"
+    ></div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+/* ==========================================================
+   НАСТРОЙКИ АЛЬБОМА
+
+   ЗДЕСЬ ТЫ БУДЕШЬ ПИСАТЬ СВОИ КОММЕНТАРИИ.
+
+   Можно писать сколько угодно текста.
+   ========================================================== */
+
+const tracks = [
+
+  {
+    title: "Невеста",
+    original: "Export",
+    file: "music/Невеста.mp3",
+
+    comment:
+      "25.08.2026. Это первая записанная песня, и как возможно слышно, она не самая удачная, но я решил не начинать заново потому что у неё есть свой вайб)). «Ну какая нафиг я невеста» олицетворяет мой ахуй когда после сказочного патруля ты предложил мне пожениться и сказал что ради этого опробуешь себя в кузнечном деле. В общем смысл песни очень олицетворяет в целом наши отношения, по крайней мере с моей стороны."
+  },
+
+
+  {
+    title: "Мама",
+    original: "Export",
+    file: "music/Мама.mp3",
+
+    comment:
+      "Так бы мне хотелось рассказать маме, о том что у меня на душе, но пока делюсь только с тобой)"
+  },
+
+
+  {
+    title: "Мои стихи, твоя гитара",
+    original: "Import",
+    file: "music/03.mp3",
+
+    comment:
+      "Здесь можно написать что-нибудь особенно личное."
+  },
+
+
+  {
+    title: "Название песни 04",
+    original: "Export",
+    file: "music/04.mp3",
+
+    comment:
+      "Комментарий к четвёртой песне."
+  },
+
+
+  {
+    title: "Название песни 05",
+    original: "Import",
+    file: "music/05.mp3",
+
+    comment:
+      "И последнее послание."
+  }
+
+];
+
+
+/* ==========================================================
+   ЭЛЕМЕНТЫ
+========================================================= */
+
+const intro =
+  document.getElementById("intro");
+
+const album =
+  document.getElementById("album");
+
+const tracksBox =
+  document.getElementById("tracks");
+
+const audio =
+  new Audio();
+
+const comment =
+  document.getElementById("comment");
+
+const commentTrack =
+  document.getElementById("commentTrack");
+
+const commentText =
+  document.getElementById("commentText");
+
+const commentNumber =
+  document.getElementById("commentNumber");
+
+
+let current = -1;
+
+let playing = false;
+
+
+/* ==========================================================
+   ЭФФЕКТ ЧАСТИЦ
+========================================================= */
+
+function burst(x, y) {
+
+  for (
+    let i = 0;
+    i < 38;
+    i++
+  ) {
+
+    const p =
+      document.createElement("i");
+
+    p.className =
+      "particle";
+
+    p.style.left =
+      x + "px";
+
+    p.style.top =
+      y + "px";
+
+
+    const angle =
+      Math.random() *
+      Math.PI *
+      2;
+
+    const distance =
+      60 +
+      Math.random() *
+      220;
+
+
+    p.style.setProperty(
+      "--x",
+      Math.cos(angle) *
+      distance +
+      "px"
+    );
+
+    p.style.setProperty(
+      "--y",
+      Math.sin(angle) *
+      distance +
+      "px"
+    );
+
+
+    p.style.animationDelay =
+      Math.random() *
+      0.12 +
+      "s";
+
+
+    document.body.appendChild(p);
+
+
+    setTimeout(
+      () => p.remove(),
+      1500
+    );
+
+  }
+
+}
+
+
+/* ==========================================================
+   ОТКРЫТИЕ АЛЬБОМА
+========================================================= */
+
+intro.addEventListener(
+  "click",
+  (e) => {
+
+    burst(
+      e.clientX,
+      e.clientY
+    );
+
+
+    intro.classList.add(
+      "hide"
+    );
+
+
+    setTimeout(
+      () => {
+
+        intro.style.display =
+          "none";
+
+        album.classList.add(
+          "show"
+        );
+
+      },
+      700
+    );
+
+  }
+);
+
+
+/* ==========================================================
+   ФОРМАТ ВРЕМЕНИ
+========================================================= */
+
+function fmt(seconds) {
+
+  if (
+    !Number.isFinite(seconds)
+  ) {
+
+    return "00:00";
+
+  }
+
+
+  return (
+    String(
+      Math.floor(
+        seconds / 60
+      )
+    ).padStart(2, "0")
+    +
+    ":"
+    +
+    String(
+      Math.floor(
+        seconds % 60
+      )
+    ).padStart(2, "0")
+  );
+
+}
+
+
+/* ==========================================================
+   ПОКАЗ КОММЕНТАРИЯ
+========================================================= */
+
+function updateComment(i) {
+
+  if (
+    !tracks[i]
+  ) return;
+
+
+  /*
+    Сначала слегка прячем старый текст,
+    потом показываем новый.
+  */
+
+  comment.classList.add(
+    "changing"
+  );
+
+
+  setTimeout(
+    () => {
+
+      commentTrack.textContent =
+        tracks[i].title;
+
+
+      commentText.textContent =
+        tracks[i].comment;
+
+
+      commentNumber.textContent =
+        "заметка "
+        +
+        String(i + 1).padStart(2, "0")
+        +
+        " / "
+        +
+        String(tracks.length).padStart(2, "0");
+
+
+      comment.classList.remove(
+        "changing"
+      );
+
+    },
+    180
+  );
+
+}
+
+
+/* ==========================================================
+   СОЗДАНИЕ ТРЕКЛИСТА
+========================================================= */
+
+tracks.forEach(
+  (t, i) => {
+
+    const row =
+      document.createElement(
+        "div"
+      );
+
+
+    row.className =
+      "track";
+
+
+    row.innerHTML = `
+
+      <div class="num">
+
+        <span class="playmark"></span>
+
+        ${String(i + 1).padStart(2, "0")}
+
+      </div>
+
+
+      <div class="track-name">
+        ${t.title}
+      </div>
+
+
+      <div class="original">
+        ${t.original}
+      </div>
+
+
+      <div
+        class="time"
+        id="duration-${i}"
+      >
+        --:--
+      </div>
+
+    `;
+
+
+    row.addEventListener(
+      "click",
+      () => {
+
+        loadTrack(
+          i,
+          true
+        );
+
+      }
+    );
+
+
+    tracksBox.appendChild(
+      row
+    );
+
+
+    /*
+      Отдельный Audio нужен только
+      для определения длительности.
+    */
+
+    const probe =
+      new Audio(t.file);
+
+
+    probe.addEventListener(
+      "loadedmetadata",
+      () => {
+
+        const duration =
+          document.getElementById(
+            "duration-" + i
+          );
+
+
+        if (duration) {
+
+          duration.textContent =
+            fmt(
+              probe.duration
+            );
+
+        }
+
+      }
+    );
+
+  }
+);
+
+
+/* ==========================================================
+   ЗАГРУЗКА ПЕСНИ
+========================================================= */
+
+function loadTrack(
+  i,
+  auto = true
+) {
+
+  if (
+    !tracks[i]
+  ) return;
+
+
+  current = i;
+
+
+  audio.src =
+    tracks[i].file;
+
+
+  document.getElementById(
+    "nowTitle"
+  ).textContent =
+    tracks[i].title;
+
+
+  document.getElementById(
+    "nowMeta"
+  ).textContent =
+    "MaryXo · "
+    +
+    tracks[i].original;
+
+
+  /*
+    Обновляем комментарий.
+  */
+
+  updateComment(i);
+
+
+  /*
+    Обновляем активную строку.
+  */
+
+  document
+    .querySelectorAll(".track")
+    .forEach(
+      (row, n) => {
+
+        row.classList.toggle(
+          "active",
+          n === i
+        );
+
+
+        row.querySelector(
+          ".playmark"
+        ).textContent =
+          n === i && playing
+            ? "▶"
+            : "";
+
+      }
+    );
+
+
+  /*
+    Запускаем песню,
+    если это был клик по треку.
+  */
+
+  if (auto) {
+
+    audio
+      .play()
+      .then(
+        () => {
+
+          playing = true;
+
+          updateUI();
+
+        }
+      )
+      .catch(
+        () => {
+
+          /*
+            Некоторые браузеры могут
+            заблокировать autoplay.
+          */
+
+        }
+      );
+
+  }
+
+}
+
+
+/* ==========================================================
+   ОБНОВЛЕНИЕ ПЛЕЕРА
+========================================================= */
+
+function updateUI() {
+
+  document.getElementById(
+    "play"
+  ).textContent =
+    playing
+      ? "❚❚"
+      : "▶";
+
+
+  const progress =
+    audio.duration
+      ? (
+          audio.currentTime /
+          audio.duration
+        ) * 100
+      : 0;
+
+
+  document.getElementById(
+    "progressFill"
+  ).style.width =
+    progress + "%";
+
+
+  document.getElementById(
+    "clock"
+  ).textContent =
+    fmt(
+      audio.currentTime
+    )
+    +
+    " / "
+    +
+    fmt(
+      audio.duration
+    );
+
+
+  /*
+    Обновляем маленький ▶
+    рядом с активным треком.
+  */
+
+  document
+    .querySelectorAll(".track")
+    .forEach(
+      (row, n) => {
+
+        row.querySelector(
+          ".playmark"
+        ).textContent =
+          n === current &&
+          playing
+            ? "▶"
+            : "";
+
+      }
+    );
+
+}
+
+
+/* ==========================================================
+   PLAY / PAUSE
+========================================================= */
+
+document
+  .getElementById("play")
+  .onclick =
+  () => {
+
+    /*
+      Если ещё ничего не выбрано —
+      запускаем первую песню.
+    */
+
+    if (
+      current < 0
+    ) {
+
+      loadTrack(
+        0,
+        true
+      );
+
+      return;
+
+    }
+
+
+    if (
+      audio.paused
+    ) {
+
+      audio.play();
+
+      playing = true;
+
+    } else {
+
+      audio.pause();
+
+      playing = false;
+
+    }
+
+
+    updateUI();
+
+  };
+
+
+/* ==========================================================
+   ПРЕДЫДУЩАЯ
+========================================================= */
+
+document
+  .getElementById("prev")
+  .onclick =
+  () => {
+
+    if (
+      current <= 0
+    ) {
+
+      loadTrack(
+        0,
+        true
+      );
+
+      return;
+
+    }
+
+
+    loadTrack(
+      current - 1,
+      true
+    );
+
+  };
+
+
+/* ==========================================================
+   СЛЕДУЮЩАЯ
+========================================================= */
+
+document
+  .getElementById("next")
+  .onclick =
+  () => {
+
+    if (
+      current >=
+      tracks.length - 1
+    ) {
+
+      loadTrack(
+        tracks.length - 1,
+        true
+      );
+
+      return;
+
+    }
+
+
+    loadTrack(
+      current + 1,
+      true
+    );
+
+  };
+
+
+/* ==========================================================
+   СОБЫТИЯ AUDIO
+========================================================= */
+
+audio.addEventListener(
+  "timeupdate",
+  updateUI
+);
+
+
+audio.addEventListener(
+  "play",
+  () => {
+
+    playing = true;
+
+    updateUI();
+
+  }
+);
+
+
+audio.addEventListener(
+  "pause",
+  () => {
+
+    playing = false;
+
+    updateUI();
+
+  }
+);
+
+
+/* ==========================================================
+   КОГДА ПЕСНЯ ЗАКОНЧИЛАСЬ
+========================================================= */
+
+audio.addEventListener(
+  "ended",
+  () => {
+
+    /*
+      Если есть следующая песня —
+      автоматически включаем её.
+
+      Вместе с ней автоматически
+      сменится комментарий.
+    */
+
+    if (
+      current <
+      tracks.length - 1
+    ) {
+
+      loadTrack(
+        current + 1,
+        true
+      );
+
+    } else {
+
+      /*
+        Последняя песня закончилась.
+      */
+
+      playing = false;
+
+      updateUI();
+
+    }
+
+  }
+);
+
+
+/* ==========================================================
+   ПРОГРЕСС-БАР
+========================================================= */
+
+document
+  .getElementById("progress")
+  .addEventListener(
+    "click",
+    (e) => {
+
+      if (
+        !audio.duration
+      ) return;
+
+
+      const rect =
+        e.currentTarget
+          .getBoundingClientRect();
+
+
+      const percent =
+        (
+          e.clientX -
+          rect.left
+        ) /
+        rect.width;
+
+
+      audio.currentTime =
+        percent *
+        audio.duration;
+
+    }
+  );
+
+</script>
+
+</body>
+</html>
