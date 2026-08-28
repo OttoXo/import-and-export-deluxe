@@ -560,11 +560,164 @@ h1 {
   margin-right: 8px;
 }
 
+
+/* ----------------------------------------------------------
+   ДОПОЛНИТЕЛЬНЫЕ ВЕРСИИ ПЕСЕН
+---------------------------------------------------------- */
+
+.track-wrap {
+  position: relative;
+}
+
+.variant-toggle {
+  display: none;
+  align-items: center;
+  gap: 7px;
+  margin: -1px 15px 0 73px;
+  padding: 7px 0 8px;
+  width: auto;
+  height: auto;
+  border-radius: 0;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .02em;
+  text-align: left;
+}
+
+.track-wrap.completed .variant-toggle {
+  display: flex;
+}
+
+.variant-toggle:hover {
+  color: #fff;
+  background: transparent;
+}
+
+.variant-arrow {
+  display: inline-block;
+  transition: transform .25s ease;
+}
+
+.track-wrap.variants-open .variant-arrow {
+  transform: rotate(180deg);
+}
+
+.variants {
+  display: none;
+  margin: 0 15px 9px 73px;
+  padding: 2px 0 2px 14px;
+  border-left: 1px solid rgba(255,53,93,.25);
+}
+
+.track-wrap.variants-open .variants {
+  display: block;
+  animation: variantsIn .25s ease both;
+}
+
+@keyframes variantsIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.variant {
+  display: grid;
+  grid-template-columns: 16px 1fr;
+  align-items: center;
+  min-height: 34px;
+  gap: 5px;
+  padding: 2px 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: rgba(255,255,255,.78);
+  font-size: 13px;
+  transition: background .2s ease, color .2s ease;
+}
+
+.variant:hover {
+  background: rgba(255,53,93,.10);
+  color: #fff;
+}
+
+.variant-playmark {
+  color: var(--pink);
+  font-size: 10px;
+}
+
+/* Подсказка после первого полного прослушивания */
+.alternative-hint {
+  position: fixed;
+  z-index: 40;
+  left: 50%;
+  bottom: 105px;
+  transform: translate(-50%, 12px);
+  width: min(390px, calc(100% - 32px));
+  padding: 14px 17px;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 14px;
+  background: rgba(16,16,20,.94);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 18px 55px rgba(0,0,0,.38);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .3s ease, transform .3s ease;
+}
+
+.alternative-hint.show {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.alternative-hint-title {
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.alternative-hint-text {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+@media(max-width:700px) {
+  .variant-toggle {
+    margin-left: 53px;
+    margin-right: 8px;
+    font-size: 10px;
+  }
+
+  .variants {
+    margin-left: 53px;
+    margin-right: 8px;
+  }
+
+  .variant {
+    font-size: 12px;
+    min-height: 32px;
+  }
+
+  .alternative-hint {
+    bottom: 92px;
+  }
+}
+
 /* ----------------------------------------------------------
    ПЛЕЕР
 ---------------------------------------------------------- */
 
 .player {
+  display: none;
+
   position: fixed;
 
   z-index: 20;
@@ -599,6 +752,10 @@ h1 {
   box-shadow:
     0 20px 60px
     rgba(0,0,0,.4);
+}
+
+.player.show {
+  display: block;
 }
 
 .player-top {
@@ -1270,49 +1427,65 @@ const tracks = [
     title: "Невеста",
     original: "Export",
     file: "music/Невеста.mp3",
-
     comment:
-      "24-25.08.2026. Это первая записанная песня, и как возможно слышно, она не самая удачная, но я решил не начинать заново потому что у неё есть свой вайб)). «Ну какая нафиг я невеста» олицетворяет мой ахуй когда после сказочного патруля ты предложил мне пожениться и сказал что ради этого опробуешь себя в кузнечном деле. В общем смысл песни очень олицетворяет в целом наши отношения, по крайней мере с моей стороны."
-  },
+      "24-25.08.2026. Это первая записанная песня, и как возможно слышно, она не самая удачная, но я решил не начинать заново потому что у неё есть свой вайб)). «Ну какая нафиг я невеста» олицетворяет мой ахуй когда после сказочного патруля ты предложил мне пожениться и сказал что ради этого опробуешь себя в кузнечном деле. В общем смысл песни очень олицетворяет в целом наши отношения, по крайней мере с моей стороны.",
 
+    // Здесь удобно добавлять новые версии этой песни.
+    variants: [
+      { title: "Невеста (Акапелла)", file: "music/Невеста(Акапелла).mp3", kind: "Акапелла" }
+    ]
+  },
 
   {
     title: "Мама",
     original: "Export",
     file: "music/Мама.mp3",
-
     comment:
-      "25.08.2026. Так бы мне хотелось рассказать маме, о том что у меня на душе, но пока делюсь только с тобой) Upd: 27.08.2026 полночь, мы говорим о том как чудесно провели время кушая бургер кинг и сидя в кино, и я тебе написал что эта песня сейчас бы отлично подошла (своей атмосферой теплоты, уюта, комфорта и романтики)"
-  },
+      "25.08.2026. Так бы мне хотелось рассказать маме, о том что у меня на душе, но пока делюсь только с тобой) Upd: 27.08.2026 полночь, мы говорим о том как чудесно провели время кушая бургер кинг и сидя в кино, и я тебе написал что эта песня сейчас бы отлично подошла (своей атмосферой теплоты, уюта, комфорта и романтики)",
 
+    variants: [
+      { title: "Мама — акапелла", file: "music/Мама акапелла.mp3", kind: "акапелла" },
+      { title: "Мама — караоке", file: "music/Мама караоке.mp3", kind: "караоке" }
+    ]
+  },
 
   {
     title: "Мои стихи, твоя гитара",
     original: "Import",
     file: "music/Мои стихи, твоя гитара.mp3",
-
     comment:
-      "27-29.08.2026. Я не мог обойти эту песню стороной, сам понимаешь: я, ты и гитара))) хоть и не то чтобы удалась (я пока н понимаю, просто ещё туретта ебашит от чудесного сегодняшнего дня в позитивном плане), но смысл важнее! Есть какой то такой вайб когда ты сегодня ко мне пришел и мы играли в ЛиС)"
-  },
+      "27-29.08.2026. Я не мог обойти эту песню стороной, сам понимаешь: я, ты и гитара))) хоть и не то чтобы удалась (я пока н понимаю, просто ещё туретта ебашит от чудесного сегодняшнего дня в позитивном плане), но смысл важнее! Есть какой то такой вайб когда ты сегодня ко мне пришел и мы играли в ЛиС)",
 
+    variants: [
+      { title: "Мои стихи, твоя гитара — акапелла", file: "music/Мои стихи, твоя гитара акапелла.mp3", kind: "акапелла" },
+      { title: "Мои стихи, твоя гитара — караоке", file: "music/Мои стихи, твоя гитара караоке.mp3", kind: "караоке" }
+    ]
+  },
 
   {
     title: "Одно и то же",
     original: "Export",
     file: "music/Одно и то же.mp3",
-
     comment:
-      "Комментарий к четвёртой песне."
-  },
+      "Комментарий к четвёртой песне.",
 
+    variants: [
+      { title: "Одно и то же — акапелла", file: "music/Одно и то же акапелла.mp3", kind: "акапелла" },
+      { title: "Одно и то же — караоке", file: "music/Одно и то же караоке.mp3", kind: "караоке" }
+    ]
+  },
 
   {
     title: "140",
     original: "Import",
     file: "music/140.mp3",
-
     comment:
-      "И последнее послание."
+      "И последнее послание.",
+
+    variants: [
+      { title: "140 — акапелла", file: "music/140 акапелла.mp3", kind: "акапелла" },
+      { title: "140 — караоке", file: "music/140 караоке.mp3", kind: "караоке" }
+    ]
   }
 
 ];
@@ -1330,6 +1503,9 @@ const album =
 
 const tracksBox =
   document.getElementById("tracks");
+
+const player =
+  document.getElementById("player");
 
 const audio =
   new Audio();
@@ -1350,6 +1526,21 @@ const commentNumber =
 let current = -1;
 
 let playing = false;
+
+// true, когда сейчас играет альтернативная версия.
+let currentIsVariant = false;
+
+// Основные песни, которые уже были дослушаны до конца.
+let completedTracks = [];
+try {
+  completedTracks = JSON.parse(localStorage.getItem("completedTracks") || "[]");
+  if (!Array.isArray(completedTracks)) completedTracks = [];
+} catch {
+  completedTracks = [];
+}
+
+const hintShownKey = "alternativeHintShown";
+let hintShown = localStorage.getItem(hintShownKey) === "1";
 
 
 /* ==========================================================
@@ -1451,6 +1642,8 @@ intro.addEventListener(
           "show"
         );
 
+        player.classList.add("show");
+
       },
       700
     );
@@ -1547,102 +1740,114 @@ function updateComment(i) {
 
 
 /* ==========================================================
+   ДОПОЛНИТЕЛЬНЫЕ ВЕРСИИ
+========================================================= */
+
+function revealVariants(index) {
+  if (!tracks[index]) return;
+
+  const wrap = tracksBox.querySelector(`.track-wrap[data-track-index="${index}"]`);
+  const toggle = wrap?.querySelector(".variant-toggle");
+
+  if (!wrap || !toggle || !(tracks[index].variants || []).length) return;
+
+  wrap.classList.add("completed");
+  toggle.classList.add("visible");
+
+  if (!completedTracks.includes(index)) {
+    completedTracks.push(index);
+    localStorage.setItem("completedTracks", JSON.stringify(completedTracks));
+  }
+
+  if (!hintShown) {
+    hintShown = true;
+    localStorage.setItem(hintShownKey, "1");
+    showAlternativeHint();
+  }
+}
+
+function showAlternativeHint() {
+  const hint = document.createElement("div");
+  hint.className = "alternative-hint";
+  hint.innerHTML = `
+    <div class="alternative-hint-title">♡ У этой песни есть ещё варианты</div>
+    <div class="alternative-hint-text">После прослушивания песни под ней появляется кнопка с акапеллой, караоке и другими версиями.</div>
+  `;
+  document.body.appendChild(hint);
+
+  requestAnimationFrame(() => hint.classList.add("show"));
+
+  setTimeout(() => {
+    hint.classList.remove("show");
+    setTimeout(() => hint.remove(), 350);
+  }, 6500);
+}
+
+/* ==========================================================
    СОЗДАНИЕ ТРЕКЛИСТА
 ========================================================= */
 
 tracks.forEach(
   (t, i) => {
 
-    const row =
-      document.createElement(
-        "div"
-      );
+    const wrap = document.createElement("div");
+    wrap.className = "track-wrap";
+    wrap.dataset.trackIndex = i;
 
-
-    row.className =
-      "track";
-
-
+    const row = document.createElement("div");
+    row.className = "track";
     row.innerHTML = `
+      <div class="num"><span class="playmark"></span>${String(i + 1).padStart(2, "0")}</div>
+      <div class="track-name">${t.title}</div>
+      <div class="original">${t.original}</div>
+      <div class="time" id="duration-${i}">--:--</div>`;
+    row.addEventListener("click", () => loadTrack(i, true));
+    wrap.appendChild(row);
 
-      <div class="num">
+    const variants = t.variants || [];
 
-        <span class="playmark"></span>
+    if (variants.length) {
+      const toggle = document.createElement("button");
+      toggle.className = "variant-toggle";
+      toggle.type = "button";
+      toggle.innerHTML = `Другие варианты <span class="variant-arrow">↓</span>`;
+      toggle.addEventListener("click", e => {
+        e.stopPropagation();
+        wrap.classList.toggle("variants-open");
+      });
+      wrap.appendChild(toggle);
 
-        ${String(i + 1).padStart(2, "0")}
+      const variantsBox = document.createElement("div");
+      variantsBox.className = "variants";
 
-      </div>
+      variants.forEach(variant => {
+        const item = document.createElement("div");
+        item.className = "variant";
+        item.innerHTML = `
+          <span class="variant-playmark">▶</span>
+          <span>${variant.title}</span>`;
+        item.addEventListener("click", e => {
+          e.stopPropagation();
+          loadVariant(variant, i);
+        });
+        variantsBox.appendChild(item);
+      });
 
+      wrap.appendChild(variantsBox);
 
-      <div class="track-name">
-        ${t.title}
-      </div>
-
-
-      <div class="original">
-        ${t.original}
-      </div>
-
-
-      <div
-        class="time"
-        id="duration-${i}"
-      >
-        --:--
-      </div>
-
-    `;
-
-
-    row.addEventListener(
-      "click",
-      () => {
-
-        loadTrack(
-          i,
-          true
-        );
-
+      if (completedTracks.includes(i)) {
+        wrap.classList.add("completed");
       }
-    );
+    }
 
+    tracksBox.appendChild(wrap);
 
-    tracksBox.appendChild(
-      row
-    );
-
-
-    /*
-      Отдельный Audio нужен только
-      для определения длительности.
-    */
-
-    const probe =
-      new Audio(t.file);
-
-
-    probe.addEventListener(
-      "loadedmetadata",
-      () => {
-
-        const duration =
-          document.getElementById(
-            "duration-" + i
-          );
-
-
-        if (duration) {
-
-          duration.textContent =
-            fmt(
-              probe.duration
-            );
-
-        }
-
-      }
-    );
-
+    /* Отдельный Audio нужен только для определения длительности. */
+    const probe = new Audio(t.file);
+    probe.addEventListener("loadedmetadata", () => {
+      const duration = document.getElementById("duration-" + i);
+      if (duration) duration.textContent = fmt(probe.duration);
+    });
   }
 );
 
@@ -1650,6 +1855,32 @@ tracks.forEach(
 /* ==========================================================
    ЗАГРУЗКА ПЕСНИ
 ========================================================= */
+
+function loadVariant(variant, parentIndex) {
+  if (!variant || !variant.file) return;
+
+  current = parentIndex;
+  currentIsVariant = true;
+
+  audio.src = variant.file;
+
+  document.getElementById("nowTitle").textContent = variant.title;
+  document.getElementById("nowMeta").textContent = "MaryXo · альтернативная версия";
+
+  updateComment(parentIndex);
+
+  document.querySelectorAll(".track").forEach((row, n) => {
+    row.classList.toggle("active", n === parentIndex);
+    row.querySelector(".playmark").textContent = "";
+  });
+
+  audio.play()
+    .then(() => {
+      playing = true;
+      updateUI();
+    })
+    .catch(() => {});
+}
 
 function loadTrack(
   i,
@@ -1662,7 +1893,7 @@ function loadTrack(
 
 
   current = i;
-
+  currentIsVariant = false;
 
   audio.src =
     tracks[i].file;
@@ -1971,34 +2202,22 @@ audio.addEventListener(
   "ended",
   () => {
 
-    /*
-      Если есть следующая песня —
-      автоматически включаем её.
-
-      Вместе с ней автоматически
-      сменится комментарий.
-    */
-
-    if (
-      current <
-      tracks.length - 1
-    ) {
-
-      loadTrack(
-        current + 1,
-        true
-      );
-
-    } else {
-
-      /*
-        Последняя песня закончилась.
-      */
-
+    // Альтернативные версии не считаются завершением основной песни
+    // и не запускают следующую основную композицию автоматически.
+    if (currentIsVariant) {
       playing = false;
-
       updateUI();
+      return;
+    }
 
+    // Основная песня полностью прослушана — открываем только её версии.
+    revealVariants(current);
+
+    if (current < tracks.length - 1) {
+      loadTrack(current + 1, true);
+    } else {
+      playing = false;
+      updateUI();
     }
 
   }
